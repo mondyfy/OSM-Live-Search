@@ -1,25 +1,30 @@
 body {
-  background: #20262E;
-  font-family: Helvetica;
-}
-#search{
-  width: 100%;
+  font-family: sans-serif;
 }
 
-#result{
+.osm-location-picker {
+  width: 100%;
+  border-radius: 0px;
+}
+
+.osm-location-picker-result {
   background: #fff;
-  min-height: 300px;
-  padding: 10px;
+  max-height: 250px;
+  overflow: auto;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin: 2px;
 }
-.map-list-item{
-  margin-bottom: 5px;
-  padding:15px;
-  background: #ddd;
+
+.map-list-item {
+  padding: 5px;
   cursor: pointer;
+  border-bottom: 1px solid #ccc;
 }
-.map-list-item:hover{
-    background: #eee;
+.map-list-item:hover {
+  background: #eee;
 }
-.map-list{
+.map-list {
   list-style: none;
+  margin: 0px;
+  padding: 0px;
 }
