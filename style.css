@@ -1,0 +1,25 @@
+body {
+  background: #20262E;
+  font-family: Helvetica;
+}
+#search{
+  width: 100%;
+}
+
+#result{
+  background: #fff;
+  min-height: 300px;
+  padding: 10px;
+}
+.map-list-item{
+  margin-bottom: 5px;
+  padding:15px;
+  background: #ddd;
+  cursor: pointer;
+}
+.map-list-item:hover{
+    background: #eee;
+}
+.map-list{
+  list-style: none;
+}
