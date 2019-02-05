@@ -9,12 +9,17 @@
     <input
       type="text"
       id="search"
-      class="osm-location-picker"
       autocomplete="off"
       placeholder="Enter a location"
     />
 
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="app.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        $('#search').OsmLiveSearch();
+      });
+    </script>
   </body>
 </html>
