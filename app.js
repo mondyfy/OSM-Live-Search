@@ -1,5 +1,6 @@
 (function() {
   var searchSel;
+  var dataFetchXhr = null;
   $.fn.OsmLiveSearch = function() {
     searchSel = this;
     searchSel.addClass('osm-location-picker');
@@ -13,10 +14,17 @@
         var resultSel = $('.osm-location-picker-result');
         resultSel.remove();
       } else {
-        $.ajax({
+        if (dataFetchXhr) {
+          /* Abort if there is any previous request for new request */
+          dataFetchXhr.abort();
+        }
+        dataFetchXhr = $.ajax({
           url: apiUrl,
           type: 'get',
           contentType: 'application/json',
+          complete: function() {
+            dataFetchXhr = null;
+          },
           success: function(resp) {
             removeResult();
             var value = searchSel.val();
@@ -73,7 +81,6 @@
         return t.trim() != '';
       });
     var finalTextArr = [];
-    console.log(textArr);
     textArr.forEach(function(word) {
       var wordArr = word
         .trim()
