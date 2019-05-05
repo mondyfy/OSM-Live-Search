@@ -12,6 +12,9 @@
         handleDataResp(lastQueryResult, lastQuery);
       }
     });
+    searchSel.blur(function() {
+      removeResult();
+    });
   };
 
   $(document).on('keyup', searchSel, function() {
