@@ -1,41 +1,48 @@
 (function() {
   var searchSel;
   var dataFetchXhr = null;
+  var lastQueryResult;
+  var lastQuery;
   $.fn.OsmLiveSearch = function() {
     searchSel = this;
     searchSel.addClass('osm-location-picker');
-    $(document).on('keyup', searchSel, function() {
-      var value = searchSel.val();
-      var apiUrl =
-        'https://nominatim.openstreetmap.org/search?q=' +
-        value +
-        '&format=json';
-      if (value.trim().length === 0) {
-        var resultSel = $('.osm-location-picker-result');
-        resultSel.remove();
-      } else {
-        if (dataFetchXhr) {
-          /* Abort if there is any previous request for new request */
-          dataFetchXhr.abort();
-        }
-        dataFetchXhr = $.ajax({
-          url: apiUrl,
-          type: 'get',
-          contentType: 'application/json',
-          complete: function() {
-            dataFetchXhr = null;
-          },
-          success: function(resp) {
-            removeResult();
-            var value = searchSel.val();
-            if (value.trim().length > 0 && resp.length > 0) {
-              handleDataResp(resp, value);
-            }
-          }
-        });
+    searchSel.focus(function() {
+      if (lastQuery && lastQueryResult) {
+        removeResult();
+        handleDataResp(lastQueryResult, lastQuery);
       }
     });
   };
+
+  $(document).on('keyup', searchSel, function() {
+    var value = searchSel.val();
+    var apiUrl =
+      'https://nominatim.openstreetmap.org/search?q=' + value + '&format=json';
+    if (value.trim().length === 0) {
+      var resultSel = $('.osm-location-picker-result');
+      resultSel.remove();
+    } else {
+      if (dataFetchXhr) {
+        /* Abort if there is any previous request for new request */
+        dataFetchXhr.abort();
+      }
+      dataFetchXhr = $.ajax({
+        url: apiUrl,
+        type: 'get',
+        contentType: 'application/json',
+        complete: function() {
+          dataFetchXhr = null;
+        },
+        success: function(resp) {
+          removeResult();
+          var value = searchSel.val();
+          if (value.trim().length > 0 && resp.length > 0) {
+            handleDataResp(resp, value);
+          }
+        }
+      });
+    }
+  });
 
   $(document).on('click', '.map-list-item', function() {
     var text = $(this).data('text');
@@ -49,6 +56,8 @@
   }
 
   function handleDataResp(data, searchText) {
+    lastQuery = searchText;
+    lastQueryResult = data;
     var listHtml = '';
     if (data && data.length > 0) {
       data.forEach(function(d) {
@@ -78,7 +87,7 @@
       .replace(/,/g, ' ')
       .split(/\s/g)
       .filter(function(t) {
-        return t.trim() != '';
+        return t.trim() !== '';
       });
     var finalTextArr = [];
     textArr.forEach(function(word) {
