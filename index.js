@@ -13,7 +13,9 @@
       }
     });
     searchSel.blur(function() {
-      removeResult();
+      setTimeout(function() {
+        removeResult();
+      }, 200);
     });
   };
 
